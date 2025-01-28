@@ -25,7 +25,7 @@ resource "aws_iam_role_policy" "kb_policy" {
 # Define the IAM role for Amazon Bedrock Knowledge Base
 resource "aws_iam_role" "bedrock_knowledge_base_role" {
   count = var.kb_role_arn != null || var.create_default_kb == false ? 0 : 1
-  name  = "AmazonBedrockExecutionRoleForKnowledgeBase-${var.name_prefix}"
+  name  = "AmazonBedrockExecutionRoleForKnowledgeBase${var.name_prefix}"
 
   assume_role_policy = jsonencode({
     "Version" : "2012-10-17",
