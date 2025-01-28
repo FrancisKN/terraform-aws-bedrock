@@ -162,7 +162,7 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_redshift" {
           query_engine_configuration = {
             type = "SERVERLESS"
             serverless_configuration = {
-              workgroup_arn = awscc_redshiftserverless_workgroup.nova_redshift_wg.workgroup.workgroup_arn # "serverless workgroup arn"
+              workgroup_arn = var.kb_redshift_query_engine_configuration_wg # "serverless workgroup arn"
               auth_configuration = {
                 type = "IAM"
               }
