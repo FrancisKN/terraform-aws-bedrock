@@ -1,3 +1,6 @@
+variable "application" { default = "deliveryexcellence" }
+variable "environment" { default = "dev" }
+
 variable "name_prefix" {
   description = "This value is appended at the beginning of resource names."
   type        = string
