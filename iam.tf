@@ -71,6 +71,20 @@ resource "aws_iam_policy" "bedrock_knowledge_base_policy" {
         ],
         "Resource" : "*"
       },
+      {
+        Effect = "Allow"
+        Action = [
+          "redshift-serverless:GetCredentials",
+          "redshift:GetClusterCredentials",
+          "redshift:DescribeClusters",
+          "redshift-serverless:DescribeWorkgroup",
+          "glue:GetTable",
+          "glue:GetTables",
+          "glue:GetDatabase",
+          "glue:GetDatabases"
+        ]
+        Resource = "*"
+      }
     ]
   })
 }
