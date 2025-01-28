@@ -803,7 +803,7 @@ variable "kb_redshift_query_generation_configuration" {
 }
 variable "kb_redshift_storage_configurations" {
   description = "A map of kb_redshift_storage_configurations for the knowledge base."
-  type = list(map(object({
+  type = list(object({
     type = string
     aws_data_catalog_configuration = map(object({
       table_names = list(string)
