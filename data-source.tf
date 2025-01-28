@@ -69,7 +69,7 @@ resource "awscc_s3_bucket" "s3_data_source" {
 
 resource "aws_bedrockagent_data_source" "knowledge_base_ds" {
   count             = local.create_s3_data_source ? 1 : 0
-  knowledge_base_id = var.existing_kb
+  knowledge_base_id = "var.existing_kb"
   name              = "${random_string.solution_prefix.result}-${var.kb_name}DataSource"
   data_source_configuration {
     type = "S3"
