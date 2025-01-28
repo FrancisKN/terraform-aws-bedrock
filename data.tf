@@ -36,11 +36,19 @@ data "aws_iam_policy_document" "agent_permissions" {
       "bedrock:InvokeModel",
       "bedrock:InvokeModelWithResponseStream"
     ]
-    resources = [
+    resources = flatten([
+      # Pour le cas standard sans code de région
       "arn:${local.partition}:bedrock:${local.region}::foundation-model/${var.foundation_model}",
       "arn:${local.partition}:bedrock:*::foundation-model/${var.foundation_model}",
       "arn:${local.partition}:bedrock:${local.region}:${local.account_id}:inference-profile/*.${var.foundation_model}",
-    ]
+      
+      # Pour le cas avec code de région
+      can(regex("^[a-z]{2}\\.", var.foundation_model)) ? [
+        "arn:${local.partition}:bedrock:${local.region}::foundation-model/${join(".", slice(split(".", var.foundation_model), 1, length(split(".", var.foundation_model))))}",
+        "arn:${local.partition}:bedrock:*::foundation-model/${join(".", slice(split(".", var.foundation_model), 1, length(split(".", var.foundation_model))))}",
+        "arn:${local.partition}:bedrock:${local.region}:${local.account_id}:inference-profile/*.${join(".", slice(split(".", var.foundation_model), 1, length(split(".", var.foundation_model))))}"
+      ] : []
+    ])
   }
 }
 
