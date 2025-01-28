@@ -779,6 +779,11 @@ variable "create_redshift_config" {
   type        = bool
   default     = false
 }
+variable "kb_redshift_query_engine_configuration_wg" {
+  description = "Whether or not to use Redshift configuration"
+  type        = string
+  default     = ""
+}
 variable "kb_redshift_query_engine_configuration" {
   description = "A map of kb_redshift_query_engine_configuration for the knowledge base."
   type = object({
