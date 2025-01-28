@@ -25,7 +25,7 @@ resource "aws_iam_role_policy" "kb_policy" {
 # Define the IAM role for Amazon Bedrock Knowledge Base
 resource "aws_iam_role" "bedrock_knowledge_base_role" {
   count = var.kb_role_arn != null || var.create_default_kb == false ? 0 : 1
-  name  = "AmazonBedrockExecutionRoleForKnowledgeBase${var.name_prefix}"
+  name  = "AmazonBedrockExecutionRoleForKnowledgeBase-${random_string.solution_prefix.result}"
 
   assume_role_policy = jsonencode({
     "Version" : "2012-10-17",
@@ -36,6 +36,54 @@ resource "aws_iam_role" "bedrock_knowledge_base_role" {
           "Service" : "bedrock.amazonaws.com"
         },
         "Action" : "sts:AssumeRole"
+      }
+    ]
+  })
+}
+
+# Attach a policy to allow necessary permissions for the Bedrock Knowledge Base
+resource "aws_iam_policy" "bedrock_knowledge_base_policy" {
+  count = var.kb_role_arn != null || var.create_default_kb == false ? 0 : 1
+  name  = "AmazonBedrockKnowledgeBasePolicy-${var.name_prefix}"
+
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      # {
+      #   "Effect" : "Allow",
+      #   "Action" : [
+      #     "aoss:APIAccessAll"
+      #   ],
+      #   "Resource" : awscc_opensearchserverless_collection.default_collection[0].arn
+      # },
+      # {
+      #   "Effect" : "Allow",
+      #   "Action" : [
+      #     "bedrock:InvokeModel",
+      #   ],
+      #   "Resource" : var.kb_embedding_model_arn
+      # },
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "bedrock:ListFoundationModels",
+          "bedrock:ListCustomModels"
+        ],
+        "Resource" : "*"
+      },
+      {
+        Effect = "Allow"
+        Action = [
+          "redshift-serverless:GetCredentials",
+          "redshift:GetClusterCredentials",
+          "redshift:DescribeClusters",
+          "redshift-serverless:DescribeWorkgroup",
+          "glue:GetTable",
+          "glue:GetTables",
+          "glue:GetDatabase",
+          "glue:GetDatabases"
+        ]
+        Resource = "*"
       }
     ]
   })
