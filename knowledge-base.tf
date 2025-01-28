@@ -156,16 +156,30 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_redshift" {
   role_arn    = var.kb_role_arn != null ? var.kb_role_arn : aws_iam_role.bedrock_knowledge_base_role[0].arn
   
   knowledge_base_configuration = {
-    type = "SQL"
-    sql_knowledge_base_configuration = {
       type = "REDSHIFT"
       redshift_configuration = {
-        query_engine_configuration     = var.kb_redshift_query_engine_configuration
-        query_generation_configuration = var.kb_redshift_query_generation_configuration
-        storage_configurations         = var.kb_redshift_storage_configurations
+        kb_redshift_query_engine_configuration = {
+          query_engine_configuration = {
+            type = "SERVERLESS"
+            serverless_configuration = {
+              workgroup_arn = awscc_redshiftserverless_workgroup.nova_redshift_wg.workgroup.workgroup_arn # "serverless workgroup arn"
+              auth_configuration = {
+                type = "IAM"
+              }
+            }
+          }
+        }
+        kb_redshift_query_generation_configuration = {
+          execution_timeout_seconds = 200
+        }
+        kb_redshift_storage_configurations = [{
+          type = "REDSHIFT"
+          aws_data_catalog_configuration = {
+            table_names = ["r2d2-glue-db.*", "r2d2-logs-glue-db.*"]
+          }
+        }]
       }
     }
-  }
 
   tags = var.kb_tags
 }
