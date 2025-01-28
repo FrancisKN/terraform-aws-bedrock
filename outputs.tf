@@ -4,11 +4,6 @@ output "mongo_kb_identifier" {
   description = "The unique identifier of the MongoDB knowledge base that was created.  If no MongoDB KB was requested, value will be null"
 }
 
-output "opensearch_kb_identifier" {
-  value       = length(awscc_bedrock_knowledge_base.knowledge_base_opensearch) > 0 ? awscc_bedrock_knowledge_base.knowledge_base_opensearch[0].id : null
-  description = "The unique identifier of the OpenSearch knowledge base that was created.  If no OpenSearch KB was requested, value will be null"
-}
-
 output "pinecone_kb_identifier" {
   value       = length(awscc_bedrock_knowledge_base.knowledge_base_pinecone) > 0 ? awscc_bedrock_knowledge_base.knowledge_base_pinecone[0].id : null
   description = "The unique identifier of the Pinecone knowledge base that was created.  If no Pinecone KB was requested, value will be null"

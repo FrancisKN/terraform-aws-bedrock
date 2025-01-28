@@ -41,54 +41,6 @@ resource "aws_iam_role" "bedrock_knowledge_base_role" {
   })
 }
 
-# # Attach a policy to allow necessary permissions for the Bedrock Knowledge Base
-# resource "aws_iam_policy" "bedrock_knowledge_base_policy" {
-#   count = var.kb_role_arn != null || var.create_default_kb == false ? 0 : 1
-#   name  = "AmazonBedrockKnowledgeBasePolicy-${random_string.solution_prefix.result}"
-
-#   policy = jsonencode({
-#     "Version" : "2012-10-17",
-#     "Statement" : [
-#       {
-#         "Effect" : "Allow",
-#         "Action" : [
-#           "aoss:APIAccessAll"
-#         ],
-#         "Resource" : awscc_opensearchserverless_collection.default_collection[0].arn
-#       },
-#       {
-#         "Effect" : "Allow",
-#         "Action" : [
-#           "bedrock:InvokeModel",
-#         ],
-#         "Resource" : var.kb_embedding_model_arn
-#       },
-#       {
-#         "Effect" : "Allow",
-#         "Action" : [
-#           "bedrock:ListFoundationModels",
-#           "bedrock:ListCustomModels"
-#         ],
-#         "Resource" : "*"
-#       },
-#       {
-#         Effect = "Allow"
-#         Action = [
-#           "redshift-serverless:GetCredentials",
-#           "redshift:GetClusterCredentials",
-#           "redshift:DescribeClusters",
-#           "redshift-serverless:DescribeWorkgroup",
-#           "glue:GetTable",
-#           "glue:GetTables",
-#           "glue:GetDatabase",
-#           "glue:GetDatabases"
-#         ]
-#         Resource = "*"
-#       }
-#     ]
-#   })
-# }
-
 resource "aws_iam_policy" "bedrock_knowledge_base_policy_s3" {
   count = var.kb_role_arn != null || var.create_default_kb == false || var.create_s3_data_source == false ? 0 : 1
   name  = "AmazonBedrockKnowledgeBasePolicyS3DataSource-${random_string.solution_prefix.result}"
