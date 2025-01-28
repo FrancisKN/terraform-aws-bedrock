@@ -781,18 +781,35 @@ variable "create_redshift_config" {
 }
 variable "kb_redshift_query_engine_configuration" {
   description = "A map of kb_redshift_query_engine_configuration for the knowledge base."
-  type        = map(any)
+  type = object({
+    query_engine_configuration = object({
+      type = string
+      serverless_configuration = object({
+        workgroup_arn = string
+        auth_configuration = object({
+          type = string
+        })
+      })
+    })
+  })
   default     = null
 }
 variable "kb_redshift_query_generation_configuration" {
   description = "A map of kb_redshift_query_generation_configuration for the knowledge base."
-  type        = map(any)
+  type = object({
+    execution_timeout_seconds = number
+  })
   default     = null
 }
 variable "kb_redshift_storage_configurations" {
   description = "A map of kb_redshift_storage_configurations for the knowledge base."
-  type        = list(map(any))
-  default     = null
+  type = list(map(object({
+    type = string
+    aws_data_catalog_configuration = map(object({
+      table_names = list(string)
+    }))
+  })))
+  default = null
 }
 
 
