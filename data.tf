@@ -6,6 +6,10 @@ locals {
   region     = data.aws_region.current.name
   account_id = data.aws_caller_identity.current.account_id
   partition  = data.aws_partition.current.partition
+
+  foundation_model_name = can(regex("^[a-z]{2}\\.", var.foundation_model)) ? 
+    join(".", slice(split(".", var.foundation_model), 1, length(split(".", var.foundation_model)))) :
+    var.foundation_model
 }
 
 data "aws_iam_policy_document" "agent_trust" {
@@ -36,19 +40,11 @@ data "aws_iam_policy_document" "agent_permissions" {
       "bedrock:InvokeModel",
       "bedrock:InvokeModelWithResponseStream"
     ]
-    resources = flatten([
-      # Pour le cas standard sans code de région
-      "arn:${local.partition}:bedrock:${local.region}::foundation-model/${var.foundation_model}",
-      "arn:${local.partition}:bedrock:*::foundation-model/${var.foundation_model}",
-      "arn:${local.partition}:bedrock:${local.region}:${local.account_id}:inference-profile/*.${var.foundation_model}",
-      
-      # Pour le cas avec code de région
-      can(regex("^[a-z]{2}\\.", var.foundation_model)) ? [
-        "arn:${local.partition}:bedrock:${local.region}::foundation-model/${join(".", slice(split(".", var.foundation_model), 1, length(split(".", var.foundation_model))))}",
-        "arn:${local.partition}:bedrock:*::foundation-model/${join(".", slice(split(".", var.foundation_model), 1, length(split(".", var.foundation_model))))}",
-        "arn:${local.partition}:bedrock:${local.region}:${local.account_id}:inference-profile/*.${join(".", slice(split(".", var.foundation_model), 1, length(split(".", var.foundation_model))))}"
-      ] : []
-    ])
+    resources = [
+      "arn:${local.partition}:bedrock:${local.region}::foundation-model/${local.foundation_model_name}",
+      "arn:${local.partition}:bedrock:*::foundation-model/${local.foundation_model_name}",
+      "arn:${local.partition}:bedrock:${local.region}:${local.account_id}:inference-profile/*.${local.foundation_model_name}"
+    ]
   }
 }
 
