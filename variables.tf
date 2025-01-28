@@ -774,37 +774,10 @@ variable "kb_redshift_query_engine_configuration_wg" {
   type        = string
   default     = ""
 }
-variable "kb_redshift_query_engine_configuration" {
-  description = "A map of kb_redshift_query_engine_configuration for the knowledge base."
-  type = object({
-    query_engine_configuration = object({
-      type = string
-      serverless_configuration = object({
-        workgroup_arn = string
-        auth_configuration = object({
-          type = string
-        })
-      })
-    })
-  })
-  default = null
-}
-variable "kb_redshift_query_generation_configuration" {
-  description = "A map of kb_redshift_query_generation_configuration for the knowledge base."
-  type = object({
-    execution_timeout_seconds = number
-  })
-  default = null
-}
-variable "kb_redshift_storage_configurations" {
-  description = "A map of kb_redshift_storage_configurations for the knowledge base."
-  type = list(object({
-    type = string
-    aws_data_catalog_configuration = object({
-      table_names = list(string)
-    })
-  }))
-  default = null
+variable "kb_redshift_query_data_catalog_configuration" {
+  description = "Whether or not to use Redshift configuration"
+  type        = list(string)
+  default     = null
 }
 
 

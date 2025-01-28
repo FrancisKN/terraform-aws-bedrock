@@ -119,7 +119,7 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_redshift" {
         storage_configurations = [{
           type = "REDSHIFT"
           aws_data_catalog_configuration = {
-            table_names = ["r2d2-glue-db.*", "r2d2-logs-glue-db.*"]
+            table_names = var.kb_redshift_query_data_catalog_configuration
           }
         }]
       }
