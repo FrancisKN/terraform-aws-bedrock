@@ -147,3 +147,25 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_rds" {
     }
   }
 }
+
+# - Redshift -
+resource "awscc_bedrock_knowledge_base" "knowledge_base_redshift" {
+  count       = var.create_redshift_config ? 1 : 0
+  name        = "${random_string.solution_prefix.result}-redshift-${var.kb_name}"
+  description = var.kb_description
+  role_arn    = var.kb_role_arn != null ? var.kb_role_arn : aws_iam_role.bedrock_knowledge_base_role[0].arn
+  
+  knowledge_base_configuration = {
+    type = "SQL"
+    sql_knowledge_base_configuration = {
+      type = "REDSHIFT"
+      redshift_configuration = {
+        query_engine_configuration     = var.kb_redshift_query_engine_configuration != null ? var.kb_redshift_query_engine_configuration : null
+        query_generation_configuration = var.kb_redshift_query_generation_configuration != null ? var.kb_redshift_query_generation_configuration : null
+        storage_configurations         = var.kb_redshift_storage_configurations != null ? var.kb_redshift_storage_configurations : null
+      }
+    }
+  }
+
+  tags = [for k, v in var.kb_tags : { key = k, value = v }]
+}
