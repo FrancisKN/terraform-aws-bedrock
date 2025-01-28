@@ -1,30 +1,30 @@
 # - Knowledge Base Default OpenSearch -
-resource "awscc_bedrock_knowledge_base" "knowledge_base_default" {
-  count       = var.create_default_kb ? 1 : 0
-  name        = "${random_string.solution_prefix.result}-${var.kb_name}"
-  description = var.kb_description
-  role_arn    = var.kb_role_arn != null ? var.kb_role_arn : aws_iam_role.bedrock_knowledge_base_role[0].arn
+# resource "awscc_bedrock_knowledge_base" "knowledge_base_default" {
+#   count       = var.create_default_kb ? 1 : 0
+#   name        = "${random_string.solution_prefix.result}-${var.kb_name}"
+#   description = var.kb_description
+#   role_arn    = var.kb_role_arn != null ? var.kb_role_arn : aws_iam_role.bedrock_knowledge_base_role[0].arn
 
-  storage_configuration = {
-    type = "OPENSEARCH_SERVERLESS"
-    opensearch_serverless_configuration = {
-      collection_arn    = awscc_opensearchserverless_collection.default_collection[0].arn
-      vector_index_name = opensearch_index.default_oss_index[0].name
-      field_mapping = {
-        metadata_field = var.metadata_field
-        text_field     = var.text_field
-        vector_field   = var.vector_field
-      }
-    }
-  }
-  knowledge_base_configuration = {
-    type = "VECTOR"
-    vector_knowledge_base_configuration = {
-      embedding_model_arn = var.kb_embedding_model_arn
-    }
-  }
-  depends_on = [ time_sleep.wait_after_index_creation ]
-}
+#   storage_configuration = {
+#     type = "OPENSEARCH_SERVERLESS"
+#     opensearch_serverless_configuration = {
+#       collection_arn    = awscc_opensearchserverless_collection.default_collection[0].arn
+#       vector_index_name = opensearch_index.default_oss_index[0].name
+#       field_mapping = {
+#         metadata_field = var.metadata_field
+#         text_field     = var.text_field
+#         vector_field   = var.vector_field
+#       }
+#     }
+#   }
+#   knowledge_base_configuration = {
+#     type = "VECTOR"
+#     vector_knowledge_base_configuration = {
+#       embedding_model_arn = var.kb_embedding_model_arn
+#     }
+#   }
+#   depends_on = [time_sleep.wait_after_index_creation]
+# }
 
 # – Existing KBs –
 
@@ -154,9 +154,11 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_redshift" {
   name        = "${random_string.solution_prefix.result}-redshift-${var.kb_name}"
   description = var.kb_description
   role_arn    = var.kb_role_arn != null ? var.kb_role_arn : aws_iam_role.bedrock_knowledge_base_role[0].arn
-  
+
   knowledge_base_configuration = {
-      type = "REDSHIFT"
+    type = "SQL"
+    sql_knowledge_base_configuration = {
+      type = "SQL"
       redshift_configuration = {
         kb_redshift_query_engine_configuration = {
           query_engine_configuration = {
@@ -180,6 +182,7 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_redshift" {
         }]
       }
     }
+  }
 
   tags = var.kb_tags
 }
