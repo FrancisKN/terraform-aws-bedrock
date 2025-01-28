@@ -805,9 +805,9 @@ variable "kb_redshift_storage_configurations" {
   description = "A map of kb_redshift_storage_configurations for the knowledge base."
   type = list(object({
     type = string
-    aws_data_catalog_configuration = map(object({
+    aws_data_catalog_configuration = object({
       table_names = list(string)
-    }))
+    })
   }))
   default = null
 }
