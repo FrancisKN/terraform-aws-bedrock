@@ -86,7 +86,7 @@ resource "awscc_logs_delivery_destination" "knowledge_base_log_destination" {
   count                    = local.create_delivery ? 1 : 0
   name                     = "${random_string.solution_prefix.result}-${var.kb_name}-delivery-destination"
   output_format            = "json"
-  destination_resource_arn = local.create_cwl ? aws_cloudwatch_log_group.knowledge_base_cwl[0].arn : var.kb_monitoring_arn
+  destination_resource_arn = var.kb_monitoring_arn
   tags = [{
     key   = "Name"
     value = "${random_string.solution_prefix.result}-${var.kb_name}-delivery-destination"

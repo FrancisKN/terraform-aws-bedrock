@@ -132,7 +132,7 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_redshift" {
     sql_knowledge_base_configuration = {
       type = "REDSHIFT"
       redshift_configuration = {
-        kb_redshift_query_engine_configuration = {
+        query_engine_configuration = {
           query_engine_configuration = {
             type = "SERVERLESS"
             serverless_configuration = {
@@ -143,10 +143,10 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_redshift" {
             }
           }
         }
-        kb_redshift_query_generation_configuration = {
+        query_generation_configuration = {
           execution_timeout_seconds = 200
         }
-        kb_redshift_storage_configurations = [{
+        storage_configurations = [{
           type = "REDSHIFT"
           aws_data_catalog_configuration = {
             table_names = ["r2d2-glue-db.*", "r2d2-logs-glue-db.*"]
