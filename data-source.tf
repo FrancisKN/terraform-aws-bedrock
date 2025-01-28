@@ -69,7 +69,7 @@ resource "awscc_s3_bucket" "s3_data_source" {
 
 resource "aws_bedrockagent_data_source" "knowledge_base_ds" {
   count             = local.create_s3_data_source ? 1 : 0
-  knowledge_base_id = var.create_default_kb ? awscc_bedrock_knowledge_base.knowledge_base_default[0].id : var.existing_kb
+  knowledge_base_id = var.existing_kb
   name              = "${random_string.solution_prefix.result}-${var.kb_name}DataSource"
   data_source_configuration {
     type = "S3"
@@ -81,20 +81,6 @@ resource "aws_bedrockagent_data_source" "knowledge_base_ds" {
   }
 }
 
-resource "aws_cloudwatch_log_group" "knowledge_base_cwl" {
-  #tfsec:ignore:log-group-customer-key
-  #checkov:skip=CKV_AWS_158:Encryption not required for log group
-  count             = local.create_cwl ? 1 : 0
-  name              = "/aws/vendedlogs/bedrock/knowledge-base/APPLICATION_LOGS/${awscc_bedrock_knowledge_base.knowledge_base_default[0].id}"
-  retention_in_days = var.kb_log_group_retention_in_days
-}
-
-resource "awscc_logs_delivery_source" "knowledge_base_log_source" {
-  count        = local.create_delivery ? 1 : 0
-  name         = "${random_string.solution_prefix.result}-${var.kb_name}-delivery-source"
-  log_type     = "APPLICATION_LOGS"
-  resource_arn = awscc_bedrock_knowledge_base.knowledge_base_default[0].knowledge_base_arn
-}
 
 resource "awscc_logs_delivery_destination" "knowledge_base_log_destination" {
   count                    = local.create_delivery ? 1 : 0
@@ -120,7 +106,7 @@ resource "awscc_logs_delivery" "knowledge_base_log_delivery" {
 # – Knowledge Base Web Crawler Data Source
 resource "awscc_bedrock_data_source" "knowledge_base_web_crawler" {
   count             = var.create_web_crawler ? 1 : 0
-  knowledge_base_id = var.create_default_kb ? awscc_bedrock_knowledge_base.knowledge_base_default[0].id : var.existing_kb
+  knowledge_base_id = var.existing_kb
   name              = "${random_string.solution_prefix.result}-${var.kb_name}DataSourceWebCrawler"
   data_source_configuration = {
     type = "WEB"
@@ -146,7 +132,7 @@ resource "awscc_bedrock_data_source" "knowledge_base_web_crawler" {
 # – Knowledge Base Confluence Data Source
 resource "awscc_bedrock_data_source" "knowledge_base_confluence" {
   count             = var.create_confluence ? 1 : 0
-  knowledge_base_id = var.create_default_kb ? awscc_bedrock_knowledge_base.knowledge_base_default[0].id : var.existing_kb
+  knowledge_base_id = var.existing_kb
   name              = "${random_string.solution_prefix.result}-${var.kb_name}DataSourceConfluence"
   data_source_configuration = {
     type = "CONFLUENCE"
@@ -173,7 +159,7 @@ resource "awscc_bedrock_data_source" "knowledge_base_confluence" {
 # – Knowledge Base Sharepoint Data Source
 resource "awscc_bedrock_data_source" "knowledge_base_sharepoint" {
   count             = var.create_sharepoint ? 1 : 0
-  knowledge_base_id = var.create_default_kb ? awscc_bedrock_knowledge_base.knowledge_base_default[0].id : var.existing_kb
+  knowledge_base_id = var.existing_kb
   name              = "${random_string.solution_prefix.result}-${var.kb_name}DataSourceSharepoint"
     data_source_configuration = {
     type = "SHAREPOINT"
@@ -202,7 +188,7 @@ resource "awscc_bedrock_data_source" "knowledge_base_sharepoint" {
 # – Knowledge Base Salesforce Data Source
 resource "awscc_bedrock_data_source" "knowledge_base_salesforce" {
   count             = var.create_salesforce ? 1 : 0
-  knowledge_base_id = var.create_default_kb ? awscc_bedrock_knowledge_base.knowledge_base_default[0].id : var.existing_kb
+  knowledge_base_id = var.existing_kb
   name              = "${random_string.solution_prefix.result}-${var.kb_name}DataSourceSalesforce"
   data_source_configuration = {
     type = "SALESFORCE"

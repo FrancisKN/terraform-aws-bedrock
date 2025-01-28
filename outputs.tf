@@ -1,12 +1,3 @@
-# output "default_collection" {
-#   value       = awscc_opensearchserverless_collection.default_collection
-#   description = "Opensearch default collection value."
-# }
-
-output "default_kb_identifier" {
-  value       = length(awscc_bedrock_knowledge_base.knowledge_base_default) > 0 ? awscc_bedrock_knowledge_base.knowledge_base_default[0].id : null
-  description = "The unique identifier of the default knowledge base that was created.  If no default KB was requested, value will be null"
-}
 
 output "mongo_kb_identifier" {
   value       = length(awscc_bedrock_knowledge_base.knowledge_base_mongo) > 0 ? awscc_bedrock_knowledge_base.knowledge_base_mongo[0].id : null
