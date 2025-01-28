@@ -772,6 +772,30 @@ variable "namespace" {
   default     = null
 }
 
+# - Redsihft Configurations - 
+
+variable "create_redshift_config" {
+  description = "Whether or not to use Redshift configuration"
+  type        = bool
+  default     = false
+}
+variable "kb_redshift_query_engine_configuration" {
+  description = "A map of kb_redshift_query_engine_configuration for the knowledge base."
+  type        = map(any)
+  default     = null
+}
+variable "kb_redshift_query_generation_configuration" {
+  description = "A map of kb_redshift_query_generation_configuration for the knowledge base."
+  type        = map(any)
+  default     = null
+}
+variable "kb_redshift_storage_configurations" {
+  description = "A map of kb_redshift_storage_configurations for the knowledge base."
+  type        = list(map(any))
+  default     = null
+}
+
+
 # – RDS Configuration –
 
 variable "create_rds_config" {
