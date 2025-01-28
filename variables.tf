@@ -33,7 +33,7 @@ variable "instruction" {
   default     = ""
 
   validation {
-    condition     = length(var.instruction) == 0 || length(var.instruction) >= 40 
+    condition     = length(var.instruction) == 0 || length(var.instruction) >= 40
     error_message = "Instruction string length must be at least 40."
   }
 }
@@ -393,7 +393,7 @@ variable "crawler_scope" {
 
 variable "seed_urls" {
   description = "A list of web urls."
-  type        = list(object({url = string}))
+  type        = list(object({ url = string }))
   default     = []
 }
 
@@ -407,13 +407,13 @@ variable "create_confluence" {
 
 variable "pattern_object_filter_list" {
   description = "List of pattern object information."
-  type        = list(object({
+  type = list(object({
     exclusion_filters = optional(list(string))
     inclusion_filters = optional(list(string))
     object_type       = optional(string)
 
   }))
-  default     = []
+  default = []
 }
 
 variable "crawl_filter_type" {
@@ -568,15 +568,15 @@ variable "s3_location_uri" {
 
 variable "transformations_list" {
   description = "A list of Lambda functions that process documents."
-  type        = list(object({
-                  step_to_apply = optional(string)
-                  transformation_function = optional(object({
-                    transformation_lambda_configuration = optional(object({
-                      lambda_arn = optional(string)
-                    }))
-                  }))
-                }))
-  default     = null
+  type = list(object({
+    step_to_apply = optional(string)
+    transformation_function = optional(object({
+      transformation_lambda_configuration = optional(object({
+        lambda_arn = optional(string)
+      }))
+    }))
+  }))
+  default = null
 }
 
 variable "parsing_config_model_arn" {
@@ -797,14 +797,14 @@ variable "kb_redshift_query_engine_configuration" {
       })
     })
   })
-  default     = null
+  default = null
 }
 variable "kb_redshift_query_generation_configuration" {
   description = "A map of kb_redshift_query_generation_configuration for the knowledge base."
   type = object({
     execution_timeout_seconds = number
   })
-  default     = null
+  default = null
 }
 variable "kb_redshift_storage_configurations" {
   description = "A map of kb_redshift_storage_configurations for the knowledge base."
@@ -957,29 +957,29 @@ variable "prompt_tags" {
 variable "variants_list" {
   description = "List of prompt variants."
   type = list(object({
-    name                    = optional(string)
-    template_type           = optional(string)
-    model_id                = optional(string)
+    name          = optional(string)
+    template_type = optional(string)
+    model_id      = optional(string)
     inference_configuration = optional(object({
-                                text = optional(object({
-                                  max_tokens = optional(number)
-                                  stop_sequences = optional(list(string))
-                                  temperature = optional(number)
-                                  top_p = optional(number)
-                                }))
-                              }))
+      text = optional(object({
+        max_tokens     = optional(number)
+        stop_sequences = optional(list(string))
+        temperature    = optional(number)
+        top_p          = optional(number)
+      }))
+    }))
 
-    template_configuration  = optional(object({
-                                text = optional(object({
-                                  input_variables = optional(list(object({ name = optional(string) })))
-                                  text = optional(string)
-                                  text_s3_location = optional(object({
-                                    bucket = optional(string)
-                                    key = optional(string)
-                                    version = optional(string)
-                                  }))
-                                }))
-                              }))
+    template_configuration = optional(object({
+      text = optional(object({
+        input_variables = optional(list(object({ name = optional(string) })))
+        text            = optional(string)
+        text_s3_location = optional(object({
+          bucket  = optional(string)
+          key     = optional(string)
+          version = optional(string)
+        }))
+      }))
+    }))
   }))
   default = null
 }
@@ -1118,7 +1118,7 @@ variable "customization_type" {
 variable "custom_model_hyperparameters" {
   description = "Parameters related to tuning the custom model."
   type        = map(string)
-  default     = {
+  default = {
     "epochCount"              = "2"
     "batchSize"               = "1"
     "learningRate"            = "0.00001"

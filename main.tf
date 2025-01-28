@@ -82,7 +82,7 @@ resource "awscc_bedrock_agent" "bedrock_agent" {
 
 # Agent Alias
 
-resource "awscc_bedrock_agent_alias"  "bedrock_agent_alias" {
+resource "awscc_bedrock_agent_alias" "bedrock_agent_alias" {
   count            = var.create_agent_alias ? 1 : 0
   agent_alias_name = var.agent_alias_name
   agent_id         = var.create_agent ? awscc_bedrock_agent.bedrock_agent[0].id : var.agent_id
@@ -151,14 +151,14 @@ resource "awscc_bedrock_flow_version" "flow_version" {
 # – Custom Model – 
 
 resource "aws_bedrock_custom_model" "custom_model" {
-  count = var.create_custom_model ? 1 : 0
-  custom_model_name     = "${random_string.solution_prefix.result}-${var.custom_model_name}"
-  job_name              = "${random_string.solution_prefix.result}-${var.custom_model_job_name}"
-  base_model_identifier = data.aws_bedrock_foundation_model.model_identifier[0].model_arn
-  role_arn              = aws_iam_role.custom_model_role[0].arn
+  count                   = var.create_custom_model ? 1 : 0
+  custom_model_name       = "${random_string.solution_prefix.result}-${var.custom_model_name}"
+  job_name                = "${random_string.solution_prefix.result}-${var.custom_model_job_name}"
+  base_model_identifier   = data.aws_bedrock_foundation_model.model_identifier[0].model_arn
+  role_arn                = aws_iam_role.custom_model_role[0].arn
   custom_model_kms_key_id = var.custom_model_kms_key_id
-  customization_type = var.customization_type
-  hyperparameters = var.custom_model_hyperparameters
+  customization_type      = var.customization_type
+  hyperparameters         = var.custom_model_hyperparameters
   output_data_config {
     s3_uri = var.custom_model_output_uri == null ? "s3://${awscc_s3_bucket.custom_model_output[0].id}/" : "s3://${var.custom_model_output_uri}"
   }
@@ -169,7 +169,7 @@ resource "aws_bedrock_custom_model" "custom_model" {
 }
 
 resource "awscc_s3_bucket" "custom_model_output" {
-  count = var.custom_model_output_uri == null ? 1 : 0
+  count       = var.custom_model_output_uri == null ? 1 : 0
   bucket_name = "${random_string.solution_prefix.result}-${var.custom_model_name}-output-bucket"
   public_access_block_configuration = {
     block_public_acls       = true

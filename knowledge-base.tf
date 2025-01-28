@@ -133,13 +133,11 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_redshift" {
       type = "REDSHIFT"
       redshift_configuration = {
         query_engine_configuration = {
-          query_engine_configuration = {
-            type = "SERVERLESS"
-            serverless_configuration = {
-              workgroup_arn = var.kb_redshift_query_engine_configuration_wg # "serverless workgroup arn"
-              auth_configuration = {
-                type = "IAM"
-              }
+          type = "SERVERLESS"
+          serverless_configuration = {
+            workgroup_arn = var.kb_redshift_query_engine_configuration_wg # "serverless workgroup arn"
+            auth_configuration = {
+              type = "IAM"
             }
           }
         }

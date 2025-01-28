@@ -77,6 +77,6 @@ data "aws_iam_policy_document" "custom_model_trust" {
 }
 
 data "aws_bedrock_foundation_model" "model_identifier" {
-  count = var.create_custom_model ? 1 : 0
+  count    = var.create_custom_model ? 1 : 0
   model_id = var.custom_model_id
 }
