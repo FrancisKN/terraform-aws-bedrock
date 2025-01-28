@@ -107,7 +107,7 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_redshift" {
         query_engine_configuration = {
           type = "SERVERLESS"
           serverless_configuration = {
-            workgroup_arn = var.kb_redshift_query_engine_configuration_wg # "serverless workgroup arn"
+            workgroup_arn = var.kb_redshift_query_engine_configuration_wg
             auth_configuration = {
               type = "IAM"
             }
@@ -117,7 +117,7 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_redshift" {
           execution_timeout_seconds = 200
         }
         storage_configurations = [{
-          type = "REDSHIFT"
+          type = "AWS_DATA_CATALOG"
           aws_data_catalog_configuration = {
             table_names = var.kb_redshift_query_data_catalog_configuration
           }
