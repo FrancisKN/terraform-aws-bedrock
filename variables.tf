@@ -808,7 +808,7 @@ variable "kb_redshift_storage_configurations" {
     aws_data_catalog_configuration = map(object({
       table_names = list(string)
     }))
-  })))
+  }))
   default = null
 }
 
