@@ -160,9 +160,9 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_redshift" {
     sql_knowledge_base_configuration = {
       type = "REDSHIFT"
       redshift_configuration = {
-        query_engine_configuration     = var.kb_redshift_query_engine_configuration != null ? var.kb_redshift_query_engine_configuration : null
-        query_generation_configuration = var.kb_redshift_query_generation_configuration != null ? var.kb_redshift_query_generation_configuration : null
-        storage_configurations         = var.kb_redshift_storage_configurations != null ? var.kb_redshift_storage_configurations : null
+        query_engine_configuration     = var.kb_redshift_query_engine_configuration
+        query_generation_configuration = var.kb_redshift_query_generation_configuration
+        storage_configurations         = var.kb_redshift_storage_configurations
       }
     }
   }
