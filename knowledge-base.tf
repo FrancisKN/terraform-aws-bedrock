@@ -167,5 +167,5 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_redshift" {
     }
   }
 
-  tags = [for k, v in var.kb_tags : { key = k, value = v }]
+  tags = var.kb_tags
 }
