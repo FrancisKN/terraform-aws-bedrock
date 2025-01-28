@@ -112,6 +112,7 @@ resource "time_sleep" "wait_before_index_creation" {
   create_duration = "60s" # Wait for 60 seconds before creating the index
 }
 
+# Change DIMENSION From 1536 To 1024
 resource "opensearch_index" "default_oss_index" {
   count                          = var.create_default_kb ? 1 : 0
   name                           = "bedrock-knowledge-base-default-index-${random_string.solution_prefix.result}"
@@ -124,7 +125,7 @@ resource "opensearch_index" "default_oss_index" {
       "properties": {
         "bedrock-knowledge-base-default-vector": {
           "type": "knn_vector",
-          "dimension": 1536,
+          "dimension": 1024,
           "method": {
             "name": "hnsw",
             "engine": "faiss",
