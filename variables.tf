@@ -742,16 +742,6 @@ variable "endpoint_service_name" {
   default     = null
 }
 
-
-# – Opensearch Serverless Configuration –
-# the default vector database
-
-variable "create_opensearch_config" {
-  description = "Whether or not to use Opensearch Serverless configuration"
-  type        = bool
-  default     = false
-}
-
 # – Pinecone Configuration –
 
 variable "create_pinecone_config" {
