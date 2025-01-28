@@ -8,7 +8,7 @@ resource "random_string" "solution_prefix" {
 
 locals {
   counter_kb        = var.create_kb ? [1] : []
-  knowledge_base_id = var.create_kb ? (var.create_mongo_config ? awscc_bedrock_knowledge_base.knowledge_base_mongo[0].id : (var.create_pinecone_config ? awscc_bedrock_knowledge_base.knowledge_base_pinecone[0].id : (var.create_rds_config ? awscc_bedrock_knowledge_base.knowledge_base_rds[0].id : null))) : null
+  knowledge_base_id = var.create_kb ? (var.create_mongo_config ? awscc_bedrock_knowledge_base.knowledge_base_mongo[0].id : (var.create_pinecone_config ? awscc_bedrock_knowledge_base.knowledge_base_pinecone[0].id : (var.create_rds_config ? awscc_bedrock_knowledge_base.knowledge_base_redshift[0].id : null))) : null
   knowledge_bases_value = {
     description          = var.kb_description
     knowledge_base_id    = var.create_kb ? local.knowledge_base_id : var.existing_kb
