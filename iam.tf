@@ -56,6 +56,7 @@ resource "aws_iam_policy" "bedrock_knowledge_base_policy" {
           "redshift-serverless:*",
           "redshift:*",
           "glue:*",
+          "sqlworkbench:DeleteSqlGenerationContext"
         ],
         "Resource" : "*"
       },
