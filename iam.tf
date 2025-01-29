@@ -49,41 +49,27 @@ resource "aws_iam_policy" "bedrock_knowledge_base_policy" {
   policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
-      # {
-      #   "Effect" : "Allow",
-      #   "Action" : [
-      #     "aoss:APIAccessAll"
-      #   ],
-      #   "Resource" : awscc_opensearchserverless_collection.default_collection[0].arn
-      # },
-      # {
-      #   "Effect" : "Allow",
-      #   "Action" : [
-      #     "bedrock:InvokeModel",
-      #   ],
-      #   "Resource" : var.kb_embedding_model_arn
-      # },
       {
         "Effect" : "Allow",
         "Action" : [
-          "bedrock:ListFoundationModels",
-          "bedrock:ListCustomModels"
+          "bedrock:*",
+          "redshift-serverless:*",
+          "redshift:*",
+          "glue:*",
         ],
         "Resource" : "*"
       },
       {
-        Effect = "Allow"
-        Action = [
-          "redshift-serverless:GetCredentials",
-          "redshift:GetClusterCredentials",
-          "redshift:DescribeClusters",
-          "redshift-serverless:DescribeWorkgroup",
-          "glue:GetTable",
-          "glue:GetTables",
-          "glue:GetDatabase",
-          "glue:GetDatabases"
+        "Sid" : "BaseS3BucketPermissions",
+        "Effect" : "Allow",
+        "Action" : [
+          "s3:ListBucket",
+          "s3:GetBucketLocation",
+          "s3:ListAllMyBuckets"
+        ],
+        "Resource" : [
+          "*"
         ]
-        Resource = "*"
       }
     ]
   })
