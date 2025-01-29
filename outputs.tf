@@ -1,4 +1,11 @@
-
+output "bedrock_knowledge_base_role_name" {
+  value       = aws_iam_role.bedrock_knowledge_base_role.name
+  description = "The bedrock_knowledge_base_role_name"
+}
+output "bedrock_knowledge_base_role_arn" {
+  value       = aws_iam_role.bedrock_knowledge_base_role.arn
+  description = "The bedrock_knowledge_base_role_name"
+}
 output "mongo_kb_identifier" {
   value       = length(awscc_bedrock_knowledge_base.knowledge_base_mongo) > 0 ? awscc_bedrock_knowledge_base.knowledge_base_mongo[0].id : null
   description = "The unique identifier of the MongoDB knowledge base that was created.  If no MongoDB KB was requested, value will be null"
