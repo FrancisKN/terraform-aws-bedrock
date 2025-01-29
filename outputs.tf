@@ -1,9 +1,9 @@
 output "bedrock_knowledge_base_role_name" {
-  value       = aws_iam_role.bedrock_knowledge_base_role.name
+  value       = length(aws_iam_role.bedrock_knowledge_base_role) > 0 ? aws_iam_role.bedrock_knowledge_base_role[0].name : null
   description = "The bedrock_knowledge_base_role_name"
 }
 output "bedrock_knowledge_base_role_arn" {
-  value       = aws_iam_role.bedrock_knowledge_base_role.arn
+  value       = length(aws_iam_role.bedrock_knowledge_base_role) > 0 ? aws_iam_role.bedrock_knowledge_base_role[0].arn : null
   description = "The bedrock_knowledge_base_role_name"
 }
 output "mongo_kb_identifier" {

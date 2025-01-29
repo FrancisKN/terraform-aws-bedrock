@@ -47,7 +47,7 @@ locals {
 
 resource "awscc_bedrock_agent" "bedrock_agent" {
   count                       = var.create_agent ? 1 : 0
-  agent_name                  = "${random_string.solution_prefix.result}-${var.agent_name}"
+  agent_name                  = "${var.agent_name}-${random_string.solution_prefix.result}"
   foundation_model            = var.foundation_model
   instruction                 = var.instruction
   description                 = var.agent_description
