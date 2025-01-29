@@ -774,6 +774,11 @@ variable "kb_redshift_query_engine_configuration_wg" {
   type        = string
   default     = ""
 }
+variable "kb_redshift_username_password_secret_arn" {
+  description = "Whether or not to use Redshift configuration"
+  type        = string
+  default     = ""
+}
 variable "kb_redshift_query_data_catalog_configuration" {
   description = "Whether or not to use Redshift configuration"
   type        = list(string)
