@@ -109,8 +109,7 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_redshift" {
           serverless_configuration = {
             workgroup_arn = var.kb_redshift_query_engine_configuration_wg
             auth_configuration = {
-              type                         = "USERNAME_PASSWORD"
-              username_password_secret_arn = var.kb_redshift_username_password_secret_arn
+              type = "IAM"
             }
           }
         }
