@@ -95,7 +95,7 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_rds" {
 # - Redshift -
 resource "awscc_bedrock_knowledge_base" "knowledge_base_redshift" {
   count       = var.create_redshift_config ? 1 : 0
-  name        = "${random_string.solution_prefix.result}-redshift-${var.kb_name}"
+  name        = "${var.kb_name}-${random_string.solution_prefix.result}"
   description = var.kb_description
   role_arn    = var.kb_role_arn != null ? var.kb_role_arn : aws_iam_role.bedrock_knowledge_base_role[0].arn
 
