@@ -50,27 +50,45 @@ resource "aws_iam_policy" "bedrock_knowledge_base_policy" {
     "Version" : "2012-10-17",
     "Statement" : [
       {
+        "Sid" : "BedrockAgentWithKnowledgeBaseOnStructuredRedshiftPolicies",
         "Effect" : "Allow",
         "Action" : [
-          "bedrock:*",
+          "sqlworkbench:*",
           "redshift-serverless:*",
           "redshift:*",
-          "glue:*",
-          "sqlworkbench:DeleteSqlGenerationContext",
-          "sqlworkbench:GetSqlRecommendations"
+          "bedrock:*",
+          "glue:GetTable*",
+          "glue:GetDatabase*",
+          "glue:GetPartition*",
+          "glue:GetSchema*"
         ],
         "Resource" : "*"
       },
       {
-        "Sid" : "BaseS3BucketPermissions",
+        "Effect" : "Allow",
+        "Action" : "redshift-data:*",
+        "Resource" : [
+          "arn:aws:redshift-serverless:*:${local.account_id}:workgroup/*",
+          "arn:aws:redshift:*:${local.account_id}:cluster:*"
+        ]
+      },
+      {
+        "Sid" : "BedrockAgentWithKnowledgeBaseOnStructuredRedshiftRDSPolicies",
+        "Effect" : "Allow",
+        "Action" : "rds-data:*",
+        "Resource" : "*"
+      },
+      {
+        "Sid" : "LimitedS3Access",
         "Effect" : "Allow",
         "Action" : [
-          "s3:ListBucket",
-          "s3:GetBucketLocation",
-          "s3:ListAllMyBuckets"
+          "s3:GetObject",
+          "s3:PutObject",
+          "s3:ListBucket"
         ],
         "Resource" : [
-          "*"
+          "arn:aws:s3:::*",
+          "arn:aws:s3:::*/*"
         ]
       }
     ]
