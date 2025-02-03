@@ -57,10 +57,7 @@ resource "aws_iam_policy" "bedrock_knowledge_base_policy" {
           "redshift-serverless:*",
           "redshift:*",
           "bedrock:*",
-          "glue:GetTable*",
-          "glue:GetDatabase*",
-          "glue:GetPartition*",
-          "glue:GetSchema*"
+          "glue:*"
         ],
         "Resource" : "*"
       },
