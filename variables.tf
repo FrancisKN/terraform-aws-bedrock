@@ -762,7 +762,7 @@ variable "namespace" {
   default     = null
 }
 
-# - Redsihft Configurations - 
+# - Redshift Configurations - 
 
 variable "create_redshift_config" {
   description = "Whether or not to use Redshift configuration"
@@ -777,6 +777,26 @@ variable "kb_redshift_query_engine_configuration_wg" {
 variable "kb_redshift_query_data_catalog_configuration" {
   description = "Whether or not to use Redshift configuration"
   type        = list(string)
+  default     = null
+}
+variable "kb_redshift_query_generation_context" {
+  description = "Whether or not to use Redshift query_generation_context configuration"
+  type = object({
+    curated_queries = list(object({
+      natural_language = string
+      sql              = string
+    }))
+    tables = list(object({
+      name        = string
+      description = optional(string)
+      inclusion   = optional(string)
+      columns = optional(list(object({
+        name        = string
+        description = optional(string)
+        inclusion   = optional(string)
+      })))
+    }))
+  })
   default     = null
 }
 

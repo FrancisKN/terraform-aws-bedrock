@@ -115,6 +115,7 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_redshift" {
         }
         query_generation_configuration = {
           execution_timeout_seconds = 200
+          generation_context = var.kb_redshift_query_generation_context
         }
         storage_configurations = [{
           type = "AWS_DATA_CATALOG"
