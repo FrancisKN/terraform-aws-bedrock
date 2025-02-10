@@ -129,9 +129,9 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_redshift" {
 
   tags = var.kb_tags
 }
-resource "awscc_bedrock_knowledge_base" "knowledge_base_redshift_2" {
+resource "awscc_bedrock_knowledge_base" "knowledge_base_redshift_3" {
   count       = var.create_redshift_config ? 1 : 0
-  name        = "${var.kb_name}-2"
+  name        = "${var.kb_name}-3"
   description = var.kb_description
   role_arn    = var.kb_role_arn != null ? var.kb_role_arn : aws_iam_role.bedrock_knowledge_base_role[0].arn
 
@@ -142,10 +142,12 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_redshift_2" {
       redshift_configuration = {
         query_engine_configuration = {
           type = "SERVERLESS"
+          provisioned_configuration = null
           serverless_configuration = {
             workgroup_arn = var.kb_redshift_query_engine_configuration_wg
             auth_configuration = {
               type = "IAM"
+              username_password_secret_arn = null
             }
           }
         }
