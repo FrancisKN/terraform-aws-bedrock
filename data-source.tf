@@ -200,3 +200,15 @@ resource "awscc_bedrock_data_source" "knowledge_base_salesforce" {
   }
   vector_ingestion_configuration = var.create_vector_ingestion_configuration == false ? null : local.vector_ingestion_configuration
 }
+
+# – Knowledge Base Redshift Data Source
+resource "awscc_bedrock_data_source" "knowledge_base_redshift" {
+  count             = var.create_redshift_config ? 1 : 0
+  name              = "DataSourceRds-${var.kb_name}-${random_string.solution_prefix.result}"
+  knowledge_base_id = awscc_bedrock_knowledge_base.knowledge_base_redshift.knowledge_base_id
+  description       = "Redshift datasource"
+
+  data_source_configuration = {
+    type = "REDSHIFT_METADATA"
+  }
+}
