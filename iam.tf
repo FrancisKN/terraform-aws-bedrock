@@ -111,7 +111,7 @@ resource "aws_iam_policy" "bedrock_knowledge_base_redshift_policy" {
         ],
         "Condition": {
           "StringEquals": {
-              "redshift-data:statement-owner-iam-userid": "${aws:userid}"
+              "redshift-data:statement-owner-iam-userid": "$${aws:userid}"
           }
         }
       },
