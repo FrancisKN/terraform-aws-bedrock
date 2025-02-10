@@ -91,6 +91,70 @@ resource "aws_iam_policy" "bedrock_knowledge_base_policy" {
     ]
   })
 }
+resource "aws_iam_policy" "bedrock_knowledge_base_redshift_policy" {
+  count = var.create_redshift_config ? 1 : 0
+  name  = "AmazonBedrockRedshiftPolicyForKnowledgeBase_${var.kb_name}-${random_string.solution_prefix.result}"
+
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Sid": "RedshiftDataAPIStatementPermissions",
+        "Effect": "Allow",
+        "Action": [
+          "redshift-data:GetStatementResult",
+          "redshift-data:DescribeStatement",
+          "redshift-data:CancelStatement"
+        ],
+        "Resource": [
+          "*"
+        ],
+        "Condition": {
+          "StringEquals": {
+              "redshift-data:statement-owner-iam-userid": "${aws:userid}"
+          }
+        }
+      },
+      {
+        "Sid": "RedshiftDataAPIExecutePermissions",
+        "Effect": "Allow",
+        "Action": [
+          "redshift-data:ExecuteStatement"
+        ],
+        "Resource": [
+          "${var.kb_redshift_query_engine_configuration_wg}"
+        ]
+      },
+      {
+        "Sid": "RedshiftServerlessGetCredentials",
+        "Effect": "Allow",
+        "Action": "redshift-serverless:GetCredentials",
+        "Resource": [
+          "${var.kb_redshift_query_engine_configuration_wg}"
+        ]
+      },
+      {
+        "Sid": "SqlWorkbenchAccess",
+        "Effect": "Allow",
+        "Action": [
+          "sqlworkbench:GetSqlRecommendations",
+          "sqlworkbench:PutSqlGenerationContext",
+          "sqlworkbench:GetSqlGenerationContext",
+          "sqlworkbench:DeleteSqlGenerationContext"
+        ],
+        "Resource": "*"
+      },
+      {
+        "Sid": "KbAccess",
+        "Effect": "Allow",
+        "Action": [
+          "bedrock:GenerateQuery"
+        ],
+        "Resource": "*"
+      }
+    ]
+  })
+}
 
 resource "aws_iam_policy" "bedrock_knowledge_base_policy_s3" {
   count = var.kb_role_arn != null || var.create_s3_data_source == false ? 0 : 1
@@ -155,6 +219,12 @@ resource "aws_iam_role_policy_attachment" "bedrock_knowledge_base_policy_s3_atta
   count      = var.kb_role_arn != null || var.create_kb == false || var.create_s3_data_source == false ? 0 : 1
   role       = aws_iam_role.bedrock_knowledge_base_role[0].name
   policy_arn = aws_iam_policy.bedrock_knowledge_base_policy_s3[0].arn
+}
+
+resource "aws_iam_role_policy_attachment" "bedrock_knowledge_base_redshift_policy_attachment" {
+  count      = var.create_redshift_config ? 1 : 0
+  role       = aws_iam_role.bedrock_knowledge_base_role[0].name
+  policy_arn = aws_iam_policy.bedrock_knowledge_base_redshift_policy[0].arn
 }
 
 resource "aws_iam_role_policy" "bedrock_kb_oss" {
