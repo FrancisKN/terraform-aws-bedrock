@@ -107,7 +107,43 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_redshift" {
         query_engine_configuration = {
           type = "SERVERLESS"
           serverless_configuration = {
-            # workgroup_arn = var.kb_redshift_query_engine_configuration_wg
+            workgroup_arn = var.kb_redshift_query_engine_configuration_wg
+            auth_configuration = {
+              type = "IAM"
+            }
+          }
+        }
+        query_generation_configuration = {
+          execution_timeout_seconds = 200
+          generation_context = var.kb_redshift_query_generation_context
+        }
+        storage_configurations = [{
+          type = "AWS_DATA_CATALOG"
+          aws_data_catalog_configuration = {
+            table_names = var.kb_redshift_query_data_catalog_configuration
+          }
+        }]
+      }
+    }
+  }
+
+  tags = var.kb_tags
+}
+resource "awscc_bedrock_knowledge_base" "knowledge_base_redshift_2" {
+  count       = var.create_redshift_config ? 1 : 0
+  name        = "${var.kb_name}-2"
+  description = var.kb_description
+  role_arn    = var.kb_role_arn != null ? var.kb_role_arn : aws_iam_role.bedrock_knowledge_base_role[0].arn
+
+  knowledge_base_configuration = {
+    type = "SQL"
+    sql_knowledge_base_configuration = {
+      type = "REDSHIFT"
+      redshift_configuration = {
+        query_engine_configuration = {
+          type = "SERVERLESS"
+          serverless_configuration = {
+            workgroup_arn = var.kb_redshift_query_engine_configuration_wg
             auth_configuration = {
               type = "IAM"
             }
