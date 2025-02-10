@@ -782,11 +782,11 @@ variable "kb_redshift_query_data_catalog_configuration" {
 variable "kb_redshift_query_generation_context" {
   description = "Whether or not to use Redshift query_generation_context configuration"
   type = object({
-    curated_queries = list(object({
+    curated_queries = optional(list(object({
       natural_language = string
       sql              = string
-    }))
-    tables = list(object({
+    })))
+    tables = optional(list(object({
       name        = string
       description = optional(string)
       inclusion   = optional(string)
@@ -795,7 +795,7 @@ variable "kb_redshift_query_generation_context" {
         description = optional(string)
         inclusion   = optional(string)
       })))
-    }))
+    })))
   })
   default     = null
 }
