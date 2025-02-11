@@ -50,31 +50,32 @@ resource "aws_iam_policy" "bedrock_knowledge_base_policy" {
     "Version" : "2012-10-17",
     "Statement" : [
       {
-        "Sid" : "BedrockAgentWithKnowledgeBaseOnStructuredRedshiftPolicies",
-        "Effect" : "Allow",
-        "Action" : [
-          "sqlworkbench:*",
-          "redshift-serverless:*",
-          "redshift:*",
-          "bedrock:*",
-          "glue:*"
+        "Effect": "Allow",
+        "Action": [
+          "bedrock:ListFoundationModels",
+          "bedrock:InvokeModel",
+          "bedrock:ListCustomModels"
         ],
-        "Resource" : "*"
+        "Resource": "*"
       },
       {
-        "Effect" : "Allow",
-        "Action" : "redshift-data:*",
-        "Resource" : [
-          "arn:aws:redshift-serverless:*:${local.account_id}:workgroup/*",
-          "arn:aws:redshift:*:${local.account_id}:cluster:*"
+        "Sid": "AllowGlueActions",
+        "Effect": "Allow",
+        "Action": [
+          "glue:GetDatabases",
+          "glue:GetDatabase",
+          "glue:GetTables",
+          "glue:GetTable",
+          "glue:GetPartitions",
+          "glue:GetPartition",
+          "glue:SearchTables"
+        ],
+        "Resource": [
+          "arn:aws:glue:${local.region}:${local.account_id}:table/*/*",
+          "arn:aws:glue:${local.region}:${local.account_id}:database/*",
+          "arn:aws:glue:${local.region}:${local.account_id}:catalog"
         ]
-      },
-      {
-        "Sid" : "BedrockAgentWithKnowledgeBaseOnStructuredRedshiftRDSPolicies",
-        "Effect" : "Allow",
-        "Action" : "rds-data:*",
-        "Resource" : "*"
-      },
+      }
       {
         "Sid" : "LimitedS3Access",
         "Effect" : "Allow",
@@ -88,6 +89,38 @@ resource "aws_iam_policy" "bedrock_knowledge_base_policy" {
           "arn:aws:s3:::*/*"
         ]
       }
+    ]
+  })
+}
+resource "aws_iam_policy" "bedrock_knowledge_base_oss_policy" {
+  count = var.create_default_kb == false ? 0 : 1
+  name  = "AmazonBedrockKnowledgeBaseOSSPolicy-${random_string.solution_prefix.result}"
+
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "aoss:APIAccessAll"
+        ],
+        "Resource" : awscc_opensearchserverless_collection.default_collection[0].arn
+      },
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "bedrock:InvokeModel",
+        ],
+        "Resource" : var.kb_embedding_model_arn
+      },
+      {
+        "Effect" : "Allow",
+        "Action" : [
+          "bedrock:ListFoundationModels",
+          "bedrock:ListCustomModels"
+        ],
+        "Resource" : "*"
+      },
     ]
   })
 }
@@ -207,6 +240,11 @@ resource "aws_iam_role_policy_attachment" "bedrock_knowledge_base_policy_attachm
   count      = var.kb_role_arn != null || var.create_kb == false ? 0 : 1
   role       = aws_iam_role.bedrock_knowledge_base_role[0].name
   policy_arn = aws_iam_policy.bedrock_knowledge_base_policy[0].arn
+}
+resource "aws_iam_role_policy_attachment" "bedrock_knowledge_base_oss_policy_attachment" {
+  count      = var.create_default_kb == false ? 0 : 1
+  role       = aws_iam_role.bedrock_knowledge_base_role[0].name
+  policy_arn = aws_iam_policy.bedrock_knowledge_base_oss_policy[0].arn
 }
 
 resource "aws_iam_role_policy_attachment" "bedrock_kb_s3_decryption_policy_attachment" {
