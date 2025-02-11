@@ -75,7 +75,7 @@ resource "aws_iam_policy" "bedrock_knowledge_base_policy" {
           "arn:aws:glue:${local.region}:${local.account_id}:database/*",
           "arn:aws:glue:${local.region}:${local.account_id}:catalog"
         ]
-      }
+      },
       {
         "Sid" : "LimitedS3Access",
         "Effect" : "Allow",
