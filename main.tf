@@ -174,7 +174,7 @@ resource "aws_bedrock_custom_model" "custom_model" {
 }
 
 resource "awscc_s3_bucket" "custom_model_output" {
-  count       = var.custom_model_output_uri == null ? 1 : 0
+  count       = (var.custom_model_output_uri == null && var.create_custom_model) ? 1 : 0
   bucket_name = "${random_string.solution_prefix.result}-${var.custom_model_name}-output-bucket"
   public_access_block_configuration = {
     block_public_acls       = true
