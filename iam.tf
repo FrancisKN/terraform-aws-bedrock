@@ -260,7 +260,7 @@ resource "aws_iam_role_policy_attachment" "bedrock_knowledge_base_policy_s3_atta
 }
 
 resource "aws_iam_role_policy_attachment" "bedrock_knowledge_base_redshift_policy_attachment" {
-  count      = var.create_redshift_config ? 1 : 0
+  count      = (var.create_redshift_config && var.kb_role_arn != null) ? 1 : 0
   role       = aws_iam_role.bedrock_knowledge_base_role[0].name
   policy_arn = aws_iam_policy.bedrock_knowledge_base_redshift_policy[0].arn
 }
