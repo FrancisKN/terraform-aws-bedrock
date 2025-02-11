@@ -55,3 +55,7 @@ output "s3_data_source_arn" {
   value       = var.kb_s3_data_source != null ? var.kb_s3_data_source : var.create_default_kb ? length(awscc_s3_bucket.s3_data_source) > 0 ? awscc_s3_bucket.s3_data_source[0].arn : null : null
   description = "The Amazon Bedrock Data Source for S3."
 }
+output "s3_data_source_id" {
+  value       = var.kb_s3_data_source != null ? var.kb_s3_data_source : var.create_default_kb ? length(awscc_s3_bucket.s3_data_source) > 0 ? awscc_s3_bucket.s3_data_source[0].id : null : null
+  description = "The Amazon Bedrock Data Source for S3."
+}
