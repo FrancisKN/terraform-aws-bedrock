@@ -9,7 +9,9 @@ resource "random_string" "solution_prefix" {
 locals {
   counter_kb = var.create_kb ? [1] : []
   knowledge_base_id = var.create_kb ? (
+    var.create_default_kb ? awscc_bedrock_knowledge_base.knowledge_base_default[0].id :
     var.create_mongo_config ? awscc_bedrock_knowledge_base.knowledge_base_mongo[0].id :
+    var.create_opensearch_config ? awscc_bedrock_knowledge_base.knowledge_base_opensearch[0].id :
     var.create_pinecone_config ? awscc_bedrock_knowledge_base.knowledge_base_pinecone[0].id :
     var.create_redshift_config ? awscc_bedrock_knowledge_base.knowledge_base_redshift[0].id :
     null
