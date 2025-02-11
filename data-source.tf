@@ -1,22 +1,22 @@
 locals {
-  create_cwl      = var.create_default_kb && var.create_kb_log_group
-  create_delivery = local.create_cwl || var.kb_monitoring_arn != null
+  create_cwl            = var.create_default_kb && var.create_kb_log_group
+  create_delivery       = local.create_cwl || var.kb_monitoring_arn != null
   create_s3_data_source = var.create_default_kb == true || var.create_s3_data_source == true
   vector_ingestion_configuration = {
     chunking_configuration = var.chunking_strategy == null ? null : {
       chunking_strategy = var.chunking_strategy
       fixed_size_chunking_configuration = {
-        max_tokens = var.chunking_strategy_max_tokens
+        max_tokens         = var.chunking_strategy_max_tokens
         overlap_percentage = var.chunking_strategy_overlap_percentage
       }
       hierarchical_chunking_configuration = var.heirarchical_overlap_tokens == null && var.level_configurations_list == null ? null : {
         level_configurations = var.level_configurations_list
-        overlap_tokens = var.heirarchical_overlap_tokens
+        overlap_tokens       = var.heirarchical_overlap_tokens
       }
       semantic_chunking_configuration = var.breakpoint_percentile_threshold == null && var.semantic_buffer_size == null && var.semantic_max_tokens ? null : {
         breakpoint_percentile_threshold = var.breakpoint_percentile_threshold
-        buffer_size = var.semantic_buffer_size
-        max_tokens = var.semantic_max_tokens 
+        buffer_size                     = var.semantic_buffer_size
+        max_tokens                      = var.semantic_max_tokens
       }
     }
     custom_transformation_configuration = var.create_custom_tranformation_config == false ? null : {
@@ -74,9 +74,9 @@ resource "aws_bedrockagent_data_source" "knowledge_base_ds" {
   data_source_configuration {
     type = "S3"
     s3_configuration {
-      bucket_arn = var.kb_s3_data_source == null ? awscc_s3_bucket.s3_data_source[0].arn : var.kb_s3_data_source # Create an S3 bucket or reference existing
+      bucket_arn              = var.kb_s3_data_source == null ? awscc_s3_bucket.s3_data_source[0].arn : var.kb_s3_data_source # Create an S3 bucket or reference existing
       bucket_owner_account_id = var.bucket_owner_account_id
-      inclusion_prefixes = var.s3_inclusion_prefixes
+      inclusion_prefixes      = var.s3_inclusion_prefixes
     }
   }
 }
@@ -151,20 +151,20 @@ resource "awscc_bedrock_data_source" "knowledge_base_confluence" {
   data_source_configuration = {
     type = "CONFLUENCE"
     confluence_configuration = {
-        crawler_configuration = {
-            filter_configuration = {
-                pattern_object_filter = {
-                    filters = var.pattern_object_filter_list
-                }
-                type = var.crawl_filter_type
-            }
+      crawler_configuration = {
+        filter_configuration = {
+          pattern_object_filter = {
+            filters = var.pattern_object_filter_list
+          }
+          type = var.crawl_filter_type
         }
-        source_configuration = {
-            auth_type = var.auth_type
-            credentials_secret_arn = var.confluence_credentials_secret_arn
-            host_type = var.host_type
-            host_url = var.host_url
-        }
+      }
+      source_configuration = {
+        auth_type              = var.auth_type
+        credentials_secret_arn = var.confluence_credentials_secret_arn
+        host_type              = var.host_type
+        host_url               = var.host_url
+      }
     }
   }
   vector_ingestion_configuration = var.create_vector_ingestion_configuration == false ? null : local.vector_ingestion_configuration
@@ -175,25 +175,25 @@ resource "awscc_bedrock_data_source" "knowledge_base_sharepoint" {
   count             = var.create_sharepoint ? 1 : 0
   knowledge_base_id = var.create_default_kb ? awscc_bedrock_knowledge_base.knowledge_base_default[0].id : var.existing_kb
   name              = "${random_string.solution_prefix.result}-${var.kb_name}DataSourceSharepoint"
-    data_source_configuration = {
+  data_source_configuration = {
     type = "SHAREPOINT"
-    share_point_configuration = { 
-        crawler_configuration = {
-            filter_configuration = {
-                pattern_object_filter ={
-                    filters = var.pattern_object_filter_list
-                }
-                type = var.crawl_filter_type
-            }
+    share_point_configuration = {
+      crawler_configuration = {
+        filter_configuration = {
+          pattern_object_filter = {
+            filters = var.pattern_object_filter_list
+          }
+          type = var.crawl_filter_type
         }
-        source_configuration = {
-            auth_type = var.auth_type
-            credentials_secret_arn = var.share_point_credentials_secret_arn
-            domain = var.share_point_domain
-            host_type = var.host_type
-            site_urls = var.share_point_site_urls
-            tenant_id = var.tenant_id
-        }
+      }
+      source_configuration = {
+        auth_type              = var.auth_type
+        credentials_secret_arn = var.share_point_credentials_secret_arn
+        domain                 = var.share_point_domain
+        host_type              = var.host_type
+        site_urls              = var.share_point_site_urls
+        tenant_id              = var.tenant_id
+      }
     }
   }
   vector_ingestion_configuration = var.create_vector_ingestion_configuration == false ? null : local.vector_ingestion_configuration
@@ -207,19 +207,19 @@ resource "awscc_bedrock_data_source" "knowledge_base_salesforce" {
   data_source_configuration = {
     type = "SALESFORCE"
     salesforce_configuration = {
-        crawler_configuration = {
-            filter_configuration = {
-                pattern_object_filter = {
-                    filters = var.pattern_object_filter_list
-                }
-                type = var.crawl_filter_type
-            }
+      crawler_configuration = {
+        filter_configuration = {
+          pattern_object_filter = {
+            filters = var.pattern_object_filter_list
+          }
+          type = var.crawl_filter_type
         }
-        source_configuration = {
-          auth_type = var.auth_type
-          credentials_secret_arn = var.salesforce_credentials_secret_arn
-          host_url = var.host_url 
-        }
+      }
+      source_configuration = {
+        auth_type              = var.auth_type
+        credentials_secret_arn = var.salesforce_credentials_secret_arn
+        host_url               = var.host_url
+      }
     }
   }
   vector_ingestion_configuration = var.create_vector_ingestion_configuration == false ? null : local.vector_ingestion_configuration

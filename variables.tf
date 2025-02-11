@@ -797,7 +797,7 @@ variable "kb_redshift_query_generation_context" {
       })))
     })))
   })
-  default     = null
+  default = null
 }
 
 

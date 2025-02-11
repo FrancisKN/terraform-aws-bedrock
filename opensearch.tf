@@ -153,6 +153,6 @@ resource "opensearch_index" "default_oss_index" {
 
 resource "time_sleep" "wait_after_index_creation" {
   count           = var.create_default_kb ? 1 : 0
-  depends_on      = [ opensearch_index.default_oss_index[0] ]
+  depends_on      = [opensearch_index.default_oss_index[0]]
   create_duration = "60s" # Wait for 60 seconds before creating the index
 }

@@ -50,18 +50,18 @@ resource "aws_iam_policy" "bedrock_knowledge_base_policy" {
     "Version" : "2012-10-17",
     "Statement" : [
       {
-        "Effect": "Allow",
-        "Action": [
+        "Effect" : "Allow",
+        "Action" : [
           "bedrock:ListFoundationModels",
           "bedrock:InvokeModel",
           "bedrock:ListCustomModels"
         ],
-        "Resource": "*"
+        "Resource" : "*"
       },
       {
-        "Sid": "AllowGlueActions",
-        "Effect": "Allow",
-        "Action": [
+        "Sid" : "AllowGlueActions",
+        "Effect" : "Allow",
+        "Action" : [
           "glue:GetDatabases",
           "glue:GetDatabase",
           "glue:GetTables",
@@ -70,7 +70,7 @@ resource "aws_iam_policy" "bedrock_knowledge_base_policy" {
           "glue:GetPartition",
           "glue:SearchTables"
         ],
-        "Resource": [
+        "Resource" : [
           "arn:aws:glue:${local.region}:${local.account_id}:table/*/*",
           "arn:aws:glue:${local.region}:${local.account_id}:database/*",
           "arn:aws:glue:${local.region}:${local.account_id}:catalog"
@@ -132,58 +132,58 @@ resource "aws_iam_policy" "bedrock_knowledge_base_redshift_policy" {
     "Version" : "2012-10-17",
     "Statement" : [
       {
-        "Sid": "RedshiftDataAPIStatementPermissions",
-        "Effect": "Allow",
-        "Action": [
+        "Sid" : "RedshiftDataAPIStatementPermissions",
+        "Effect" : "Allow",
+        "Action" : [
           "redshift-data:GetStatementResult",
           "redshift-data:DescribeStatement",
           "redshift-data:CancelStatement"
         ],
-        "Resource": [
+        "Resource" : [
           "*"
         ],
-        "Condition": {
-          "StringEquals": {
-              "redshift-data:statement-owner-iam-userid": "$${aws:userid}"
+        "Condition" : {
+          "StringEquals" : {
+            "redshift-data:statement-owner-iam-userid" : "$${aws:userid}"
           }
         }
       },
       {
-        "Sid": "RedshiftDataAPIExecutePermissions",
-        "Effect": "Allow",
-        "Action": [
+        "Sid" : "RedshiftDataAPIExecutePermissions",
+        "Effect" : "Allow",
+        "Action" : [
           "redshift-data:ExecuteStatement"
         ],
-        "Resource": [
+        "Resource" : [
           "${var.kb_redshift_query_engine_configuration_wg}"
         ]
       },
       {
-        "Sid": "RedshiftServerlessGetCredentials",
-        "Effect": "Allow",
-        "Action": "redshift-serverless:GetCredentials",
-        "Resource": [
+        "Sid" : "RedshiftServerlessGetCredentials",
+        "Effect" : "Allow",
+        "Action" : "redshift-serverless:GetCredentials",
+        "Resource" : [
           "${var.kb_redshift_query_engine_configuration_wg}"
         ]
       },
       {
-        "Sid": "SqlWorkbenchAccess",
-        "Effect": "Allow",
-        "Action": [
+        "Sid" : "SqlWorkbenchAccess",
+        "Effect" : "Allow",
+        "Action" : [
           "sqlworkbench:GetSqlRecommendations",
           "sqlworkbench:PutSqlGenerationContext",
           "sqlworkbench:GetSqlGenerationContext",
           "sqlworkbench:DeleteSqlGenerationContext"
         ],
-        "Resource": "*"
+        "Resource" : "*"
       },
       {
-        "Sid": "KbAccess",
-        "Effect": "Allow",
-        "Action": [
+        "Sid" : "KbAccess",
+        "Effect" : "Allow",
+        "Action" : [
           "bedrock:GenerateQuery"
         ],
-        "Resource": "*"
+        "Resource" : "*"
       }
     ]
   })

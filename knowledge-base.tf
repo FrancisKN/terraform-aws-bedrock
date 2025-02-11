@@ -23,7 +23,7 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_default" {
       embedding_model_arn = var.kb_embedding_model_arn
     }
   }
-  depends_on = [ time_sleep.wait_after_index_creation ]
+  depends_on = [time_sleep.wait_after_index_creation]
 }
 
 # – Existing KBs –
@@ -170,7 +170,7 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_redshift" {
         }
         query_generation_configuration = {
           execution_timeout_seconds = 200
-          generation_context = var.kb_redshift_query_generation_context
+          generation_context        = var.kb_redshift_query_generation_context
         }
         storage_configurations = [{
           type = "AWS_DATA_CATALOG"
