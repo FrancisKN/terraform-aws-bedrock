@@ -42,7 +42,7 @@ locals {
 # - Knowledge Base S3 Data Source –
 resource "awscc_s3_bucket" "s3_data_source" {
   count       = local.create_s3_data_source && var.kb_s3_data_source == null ? 1 : 0
-  bucket_name = "${random_string.solution_prefix.result}-${var.kb_name}-default-bucket"
+  bucket_name = "${var.kb_name}-default-bucket-${random_string.solution_prefix.result}"
 
   public_access_block_configuration = {
     block_public_acls       = true
