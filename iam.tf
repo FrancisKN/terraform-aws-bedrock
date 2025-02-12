@@ -124,6 +124,42 @@ resource "aws_iam_policy" "bedrock_knowledge_base_oss_policy" {
     ]
   })
 }
+resource "aws_iam_policy" "bedrock_knowledge_base_confluence_policy" {
+  count = (var.create_confluence == true && var.confluence_credentials_secret_arn != null) ? 1 : 0
+  name  = "AmazonBedrockKnowledgeBaseConfluencePolicy-${random_string.solution_prefix.result}"
+
+  policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+      "Effect": "Allow",
+      "Action": [
+        "secretsmanager:GetSecretValue",
+        "secretsmanager:PutSecretValue"
+      ],
+      "Resource": [
+        "${var.confluence_credentials_secret_arn}"
+      ]
+    },
+    {
+      "Effect": "Allow",
+      "Action": [
+        "kms:Decrypt"
+      ],
+      "Resource": [
+        "arn:aws:kms:${local.region}:${local.account_id}:key/*"
+      ],
+      "Condition": {
+        "StringLike": {
+          "kms:ViaService": [
+            "secretsmanager.${local.region}.amazonaws.com"
+          ]
+        }
+      }
+    },
+    ]
+  })
+}
 resource "aws_iam_policy" "bedrock_knowledge_base_redshift_policy" {
   count = var.create_redshift_config ? 1 : 0
   name  = "AmazonBedrockRedshiftPolicyForKnowledgeBase_${var.kb_name}-${random_string.solution_prefix.result}"
@@ -245,6 +281,11 @@ resource "aws_iam_role_policy_attachment" "bedrock_knowledge_base_oss_policy_att
   count      = var.create_default_kb == false ? 0 : 1
   role       = aws_iam_role.bedrock_knowledge_base_role[0].name
   policy_arn = aws_iam_policy.bedrock_knowledge_base_oss_policy[0].arn
+}
+resource "aws_iam_role_policy_attachment" "bedrock_knowledge_base_confluence_policy_attachment" {
+  count      = (var.create_confluence == true && var.confluence_credentials_secret_arn != null) ? 1 : 0
+  role       = aws_iam_role.bedrock_knowledge_base_role[0].name
+  policy_arn = aws_iam_policy.bedrock_knowledge_base_confluence_policy[0].arn
 }
 
 resource "aws_iam_role_policy_attachment" "bedrock_kb_s3_decryption_policy_attachment" {
