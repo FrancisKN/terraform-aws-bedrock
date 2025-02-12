@@ -4,6 +4,7 @@ resource "awscc_bedrock_knowledge_base" "knowledge_base_default" {
   name        = "${var.kb_name}-${random_string.solution_prefix.result}"
   description = var.kb_description
   role_arn    = var.kb_role_arn != null ? var.kb_role_arn : aws_iam_role.bedrock_knowledge_base_role[0].arn
+  tags        = var.kb_tags
 
   storage_configuration = {
     type = "OPENSEARCH_SERVERLESS"
