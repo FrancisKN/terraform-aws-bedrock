@@ -100,15 +100,16 @@ resource "awscc_bedrock_agent_alias" "bedrock_agent_alias" {
     }
   ]
   tags = var.agent_alias_tags
-  
+
   lifecycle {
     create_before_destroy = true
     replace_triggered_by = [
-      terraform_data.agent_alias_name_trigger.output
+      terraform_data.agent_alias_name_trigger[0].output
     ]
   }
 }
 resource "terraform_data" "agent_alias_name_trigger" {
+  count = var.create_agent_alias ? 1 : 0
   input = var.agent_alias_name
 }
 
