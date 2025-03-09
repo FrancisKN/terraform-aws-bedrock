@@ -100,6 +100,16 @@ resource "awscc_bedrock_agent_alias" "bedrock_agent_alias" {
     }
   ]
   tags = var.agent_alias_tags
+  
+  lifecycle {
+    create_before_destroy = true
+    replace_triggered_by = [
+      terraform_data.agent_alias_name_trigger.output
+    ]
+  }
+}
+resource "terraform_data" "agent_alias_name_trigger" {
+  input = var.agent_alias_name
 }
 
 # – Guardrail –
