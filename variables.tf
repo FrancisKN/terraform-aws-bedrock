@@ -536,7 +536,7 @@ variable "level_configurations_list" {
   default     = null
 }
 
-variable "heirarchical_overlap_tokens" {
+variable "hierarchical_overlap_tokens" {
   description = "The number of tokens to repeat across chunks in the same layer."
   type        = number
   default     = null

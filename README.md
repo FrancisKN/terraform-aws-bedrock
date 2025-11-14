@@ -464,7 +464,7 @@ No modules.
 | <a name="input_guardrail_kms_key_arn"></a> [guardrail\_kms\_key\_arn](#input\_guardrail\_kms\_key\_arn) | KMS encryption key to use for the guardrail. | `string` | `null` | no |
 | <a name="input_guardrail_name"></a> [guardrail\_name](#input\_guardrail\_name) | The name of the guardrail. | `string` | `"TerraformBedrockGuardrail"` | no |
 | <a name="input_guardrail_tags"></a> [guardrail\_tags](#input\_guardrail\_tags) | A map of tags keys and values for the knowledge base. | `list(map(string))` | `null` | no |
-| <a name="input_heirarchical_overlap_tokens"></a> [heirarchical\_overlap\_tokens](#input\_heirarchical\_overlap\_tokens) | The number of tokens to repeat across chunks in the same layer. | `number` | `null` | no |
+| <a name="input_hierarchical_overlap_tokens"></a> [hierarchical\_overlap\_tokens](#input\_hierarchical\_overlap\_tokens) | The number of tokens to repeat across chunks in the same layer. | `number` | `null` | no |
 | <a name="input_host_type"></a> [host\_type](#input\_host\_type) | The supported host type, whether online/cloud or server/on-premises. | `string` | `null` | no |
 | <a name="input_host_url"></a> [host\_url](#input\_host\_url) | The host URL or instance URL. | `string` | `null` | no |
 | <a name="input_idle_session_ttl"></a> [idle\_session\_ttl](#input\_idle\_session\_ttl) | How long sessions should be kept open for the agent. | `number` | `600` | no |

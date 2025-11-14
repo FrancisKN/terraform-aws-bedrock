@@ -9,9 +9,9 @@ locals {
         max_tokens = var.chunking_strategy_max_tokens
         overlap_percentage = var.chunking_strategy_overlap_percentage
       }
-      hierarchical_chunking_configuration = var.heirarchical_overlap_tokens == null && var.level_configurations_list == null ? null : {
+      hierarchical_chunking_configuration = var.hierarchical_overlap_tokens == null && var.level_configurations_list == null ? null : {
         level_configurations = var.level_configurations_list
-        overlap_tokens = var.heirarchical_overlap_tokens
+        overlap_tokens = var.hierarchical_overlap_tokens
       }
       semantic_chunking_configuration = var.breakpoint_percentile_threshold == null && var.semantic_buffer_size == null && var.semantic_max_tokens ? null : {
         breakpoint_percentile_threshold = var.breakpoint_percentile_threshold
